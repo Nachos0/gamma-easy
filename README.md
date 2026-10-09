@@ -110,6 +110,8 @@ Follow the [roadmap](docs/ROADMAP.md), or
 installation is verified, with a reversible Single-player / Co-op mode switch.
 The integration and GAMMA tweaks will be worked out and tested later; co-op is not
 included in the current release.
+The [candidate comparison](docs/COOP-COMPARISON.md) also covers Anomaly Together 2
+and improvements to mode switching, friend compatibility, and recovery.
 
 ## Credits and license
 

@@ -1,9 +1,13 @@
-# Planned co-op integration: xrRazom
+# Planned co-op integration
 
 **Status: research and planning only.** Co-op is not included in the current app
-or release. First validate the ordinary GAMMA installation and game launch, then
-work out and test the integration. The desired result is an optional co-op mode
+or release. The ordinary installation has now reached the game world, confirmed
+by the user. Next work out and test the integration. The desired result is an optional co-op mode
 that the user can enable after the base installation is ready.
+
+The [candidate comparison](COOP-COMPARISON.md) recommends testing xrRazom first
+and evaluating Anomaly Together 2 separately as an alternative. The choice is
+provisional until two-player testing establishes compatibility.
 
 ## Upstream findings
 

@@ -69,7 +69,11 @@ jobs:
           RELEASE_TAG: ${{ github.ref_name }}
         shell: bash
         run: |
-          gh release create "$RELEASE_TAG" dist/* \
-            --verify-tag --prerelease \
-            --title "GAMMA Easy $RELEASE_TAG — Early alpha" \
-            --notes-file "docs/releases/$RELEASE_TAG.md"
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" dist/* --clobber
+          else
+            gh release create "$RELEASE_TAG" dist/* \
+              --verify-tag --prerelease \
+              --title "GAMMA Easy $RELEASE_TAG — Early alpha" \
+              --notes-file "docs/releases/$RELEASE_TAG.md"
+          fi

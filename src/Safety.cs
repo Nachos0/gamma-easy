@@ -114,8 +114,8 @@ static class Safety
             if (!File.Exists(Path.Combine(gamma, file))) throw new IOException("Missing GAMMA file: " + file);
         string ini = File.ReadAllText(Path.Combine(gamma, "ModOrganizer.ini"));
         if (!ini.Contains("selected_profile=@ByteArray(G.A.M.M.A)")) throw new IOException("The GAMMA profile is not configured.");
-        string expected = "gamePath=@ByteArray(" + anomaly.Replace('\\', '/') + ")";
-        if (ini.IndexOf(expected, StringComparison.OrdinalIgnoreCase) < 0) throw new IOException("Mod Organizer points to the wrong Anomaly folder.");
+        var gamePath = Regex.Match(ini, @"(?m)^gamePath=(.*)$");
+        if (!gamePath.Success || !SameGamePath(gamePath.Groups[1].Value.Trim(), anomaly)) throw new IOException("Mod Organizer points to the wrong Anomaly folder.");
         if (!ini.Contains("title=Anomaly (DX11)")) throw new IOException("The DX11 launch entry is missing.");
         int count = 0;
         foreach (string raw in File.ReadLines(Path.Combine(gamma, "profiles", "G.A.M.M.A", "modlist.txt")))
@@ -133,6 +133,13 @@ static class Safety
         }
         if (count == 0) throw new IOException("No enabled mods were found.");
         return count;
+    }
+    internal static bool SameGamePath(string encoded, string expected)
+    {
+        if (encoded.StartsWith("@ByteArray(") && encoded.EndsWith(")")) encoded = encoded.Substring(11, encoded.Length - 12);
+        encoded = encoded.Replace(@"\\", @"\").Replace('/', '\\');
+        try { return Path.IsPathRooted(encoded) && Path.GetFullPath(encoded).TrimEnd('\\').Equals(Path.GetFullPath(expected).TrimEnd('\\'), StringComparison.OrdinalIgnoreCase); }
+        catch { return false; }
     }
     internal static bool Successful(string output, int exitCode)
     {

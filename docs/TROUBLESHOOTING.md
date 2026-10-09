@@ -43,6 +43,12 @@ disables antivirus. Third-party security software is not configured by the app.
 
 ## Play stays unavailable
 
+If the backend says Install finished but the final check fails, update to 0.1.1
+and use **Verify** with MO2 closed. This checks the completed installation without
+rerunning downloads/extraction. It fixes the specific upstream DarkasleQif spelling
+mismatch and accepts the Windows path format written by MO2. Other genuinely
+missing mods continue to be refused.
+
 An install must finish successfully and pass the local profile/file checks. Follow
 the displayed message. Restart Windows if requested after installing Microsoft
 components. Close the game and MO2 before Repair / update; this reapplies the official

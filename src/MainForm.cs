@@ -27,7 +27,8 @@ class MainForm : Form
     ComboBox drives;
     Label location, status, detail;
     Button install, play, stop, repair;
-    CheckBox exclusions, runtimes;
+    CheckBox exclusions, runtimes, auditMd5;
+    CancellationTokenSource verifyCancel;
     ProgressBar progress;
     TextBox logs;
     InstallState state;
@@ -39,7 +40,7 @@ class MainForm : Form
     internal MainForm(InstallState saved, bool preview)
     {
         state = saved ?? new InstallState();
-        Text = "GAMMA Easy · 0.1"; ClientSize = new Size(850, 680); MinimumSize = Size;
+        Text = "GAMMA Easy · 0.1.1"; ClientSize = new Size(850, 680); MinimumSize = Size;
         BackColor = Color.FromArgb(19, 24, 25); ForeColor = Color.FromArgb(232, 235, 226);
         Font = new Font("Segoe UI", 10); StartPosition = FormStartPosition.CenterScreen;
         Controls.Add(new Label { Text = "GAMMA EASY", Font = new Font("Segoe UI", 28, FontStyle.Bold), Bounds = new Rectangle(32, 23, 600, 57) });
@@ -50,6 +51,7 @@ class MainForm : Form
         location = new Label { Bounds = new Rectangle(36, 205, 778, 44), ForeColor = Color.FromArgb(166, 183, 176) }; Controls.Add(location);
         exclusions = new CheckBox { Text = "Add only the game folders to Windows Defender exclusions", Bounds = new Rectangle(36, 251, 778, 26), Checked = state.Exclusions }; Controls.Add(exclusions);
         runtimes = new CheckBox { Text = "Install required Microsoft Visual C++ and DirectX components", Bounds = new Rectangle(36, 281, 778, 26), Checked = state.Runtimes }; Controls.Add(runtimes);
+        auditMd5 = new CheckBox { Text = "Check cached downloads with MD5 when verifying (optional, slower)", Bounds = new Rectangle(36, 307, 778, 21), Checked = false, Font = new Font("Segoe UI", 9) }; Controls.Add(auditMd5);
         install = MakeButton("Install", 36, 329, 250, true); install.Click += StartInstall;
         play = MakeButton("Play", 303, 329, 250, false); play.Click += Play;
         stop = MakeButton("Stop", 570, 329, 244, false); stop.Enabled = false; stop.Click += Cancel;
@@ -58,12 +60,14 @@ class MainForm : Form
         progress = new ProgressBar { Bounds = new Rectangle(36, 473, 778, 9), Style = ProgressBarStyle.Continuous }; Controls.Add(progress);
         logs = new TextBox { Bounds = new Rectangle(36, 496, 778, 112), Multiline = true, ReadOnly = true, ScrollBars = ScrollBars.Vertical, BackColor = Color.FromArgb(12, 16, 17), ForeColor = Color.FromArgb(174, 192, 174), Font = new Font("Consolas", 9), BorderStyle = BorderStyle.FixedSingle }; Controls.Add(logs);
         repair = MakeButton("Repair / update", 36, 623, 180, false); repair.Height = 32; repair.Click += StartInstall;
-        var openLogs = MakeButton("Open log", 230, 623, 140, false); openLogs.Height = 32; openLogs.Click += (s, e) => { if (File.Exists(Program.LogFile)) Process.Start("notepad.exe", Program.Quote(Program.LogFile)); };
-        var openMods = MakeButton("Mod Organizer", 384, 623, 170, false); openMods.Height = 32; openMods.Click += (s, e) => { if (!busy && !string.IsNullOrEmpty(state.Root)) OpenMo2(false); };
-        var license = MakeButton("About", 568, 623, 246, false); license.Height = 32; license.Click += (s, e) => MessageBox.Show("GAMMA Easy 0.1.0\nIndependent community app. Not affiliated with GAMMA, GSC or FaithBeam.\n\nInstaller engine: FaithBeam/stalker-gamma-cli 1.37.1\nhttps://github.com/FaithBeam/stalker-gamma-cli\n\nGPL-3.0-or-later. Source and third-party notices accompany this build.\nNo game files are bundled. Antivirus is never disabled.\n\nThis first build has not completed a full game installation test.", "About GAMMA Easy");
+        var verify = MakeButton("Verify", 230, 623, 140, false); verify.Height = 32;
+        verify.Click += VerifyCompleted;
+        var openLogs = MakeButton("Open log", 384, 623, 140, false); openLogs.Height = 32; openLogs.Click += (s, e) => { if (File.Exists(Program.LogFile)) Process.Start("notepad.exe", Program.Quote(Program.LogFile)); };
+        var openMods = MakeButton("Mod Organizer", 538, 623, 170, false); openMods.Height = 32; openMods.Click += (s, e) => { if (!busy && !string.IsNullOrEmpty(state.Root)) OpenMo2(false); };
+        var license = MakeButton("About", 722, 623, 92, false); license.Height = 32; license.Click += (s, e) => MessageBox.Show("GAMMA Easy 0.1.1\nIndependent community app. Not affiliated with GAMMA, GSC or FaithBeam.\n\nInstaller engine: FaithBeam/stalker-gamma-cli 1.37.1\nhttps://github.com/FaithBeam/stalker-gamma-cli\n\nGPL-3.0-or-later. Source and third-party notices accompany this build.\nNo game files are bundled. Antivirus is never disabled.\n\nGameplay still requires a real validation test.", "About GAMMA Easy");
         drives.SelectedIndexChanged += (s, e) => RefreshReady();
         timer = new System.Windows.Forms.Timer { Interval = 500 }; timer.Tick += Poll;
-        FormClosing += (s, e) => { if (busy) { Cancel(s, EventArgs.Empty); e.Cancel = true; } };
+        FormClosing += (s, e) => { if (verifyCancel != null) verifyCancel.Cancel(); if (busy) { Cancel(s, EventArgs.Empty); e.Cancel = true; } };
         if (preview)
         {
             drives.Items.Add(new DriveChoice { Root = "D:\\", Text = "D:  ·  Games  ·  488 GB free" }); drives.SelectedIndex = 0; return;
@@ -139,9 +143,40 @@ class MainForm : Form
     }
     void Cancel(object sender, EventArgs e)
     {
+        if (verifyCancel != null) { verifyCancel.Cancel(); status.Text = "Stopping cache check…"; stop.Enabled = false; return; }
         if (!busy) return;
         File.WriteAllText(Path.Combine(Program.Home, "cancel-" + request), "cancel");
         stop.Enabled = false; status.Text = "Stopping safely…";
+    }
+    async void VerifyCompleted(object sender, EventArgs e)
+    {
+        if (busy || verifyCancel != null) return;
+        if (SelectedRoot != state.Root) { detail.Text = "Select the installed game drive before verifying."; return; }
+        bool audit = auditMd5.Checked;
+        verifyCancel = new CancellationTokenSource(); var cancel = verifyCancel.Token;
+        install.Enabled = repair.Enabled = play.Enabled = drives.Enabled = auditMd5.Enabled = false;
+        stop.Enabled = true; status.Text = audit ? "Checking installation and cached MD5…" : "Checking installation…";
+        progress.Style = ProgressBarStyle.Marquee; timer.Start();
+        try
+        {
+            string summary = await Task.Run(() =>
+            {
+                int count = InstallationRecovery.VerifyFinished();
+                if (!audit) return count + " enabled mods verified. No downloads, extraction or archive MD5 scan.";
+                var result = CacheAudit.Run(state.Root + "GAMMA", cancel, Program.Log);
+                Program.Log(result.Summary);
+                return result.Summary + (result.Corrupt.Count > 0 ? " See the log; game-file verification passed." : " Game-file verification passed.");
+            });
+            if (IsDisposed) return;
+            state = Program.LoadState(); RefreshReady(); detail.Text = summary;
+        }
+        catch (OperationCanceledException) { if (!IsDisposed) { state = Program.LoadState(); RefreshReady(); detail.Text = "Optional cache check stopped; no files were changed."; } }
+        catch (Exception error) { if (!IsDisposed) { status.Text = "Verification needs attention"; detail.Text = error.Message; } }
+        finally
+        {
+            verifyCancel.Dispose(); verifyCancel = null;
+            if (!IsDisposed) { timer.Stop(); progress.Style = ProgressBarStyle.Continuous; drives.Enabled = auditMd5.Enabled = true; stop.Enabled = false; repair.Enabled = true; install.Enabled = state.Phase != "Ready"; }
+        }
     }
     void Poll(object sender, EventArgs e)
     {

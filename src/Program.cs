@@ -24,7 +24,7 @@ using System.Xml.Serialization;
 
 [assembly: AssemblyTitle("GAMMA Easy")]
 [assembly: AssemblyDescription("Independent Anomaly and GAMMA installer and launcher")]
-[assembly: AssemblyVersion("0.1.0.0")]
+[assembly: AssemblyVersion("0.1.1.0")]
 
 static class Program
 {
@@ -45,6 +45,11 @@ static class Program
         Application.SetCompatibleTextRenderingDefault(false);
         try
         {
+            if (args.Length == 1 && args[0] == "--verify-install")
+            {
+                try { int count = InstallationRecovery.VerifyFinished(); File.WriteAllText(Path.Combine(Home, "recovery-result.txt"), "PASS: " + count + " enabled mods verified. Ready to play."); return 0; }
+                catch (Exception error) { File.WriteAllText(Path.Combine(Home, "recovery-result.txt"), "FAILED: " + error.Message); return 1; }
+            }
             if (args.Length == 2 && args[0] == "--self-test")
             {
                 try { return SelfTests.Run(args[1]); }

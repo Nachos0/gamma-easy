@@ -4,6 +4,12 @@ The initial build passed **25 checks** locally on Windows. CI is configured to r
 these from the repository. Passing them demonstrates launcher behavior; it does not demonstrate a
 working installed game.
 
+Version 0.1.1 passes **36 isolated checks**, including MO2 Windows-path parsing,
+the known upstream mod-name alias, profile backup/priority preservation, optional
+cached MD5 matching, mismatch reporting, and audit cancellation. A real completed
+installation passed file/profile verification with 578 enabled mods after the
+specific naming repair. Gameplay remains untested.
+
 | Area | Checked |
 | --- | --- |
 | Drive paths | Root normalization, nested/network/path traversal rejection, live internal-drive identification |

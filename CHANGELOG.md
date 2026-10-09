@@ -5,6 +5,15 @@
 - Documented the planned optional xrRazom co-op integration and reversible mode
   switch. This is a research/roadmap update; no co-op functionality is shipped.
 
+## 0.1.1 — Installation verification recovery
+
+- Correct the specific upstream DarkasleQif/Darkasleif mod-name mismatch, with a
+  profile backup and preserved priority/enabled state.
+- Accept the escaped Windows game-path format written by Mod Organizer.
+- Add Verify to recheck a completed backend installation without downloads or extraction.
+- Offer an optional, cancellable cached-archive MD5 audit, disabled by default.
+- Continue rejecting unrelated missing mods and paths pointing at another game folder.
+
 ## 0.1.0 — Early alpha
 
 - Windows Forms setup, drive selection, and launcher.

@@ -39,6 +39,13 @@ rehost the game or modpack. A download host may throttle, fail, or challenge a r
 
 ## Stop, retry, and update
 
+After a backend install finishes, **Verify** rechecks the files/profile without
+downloading or extracting again. Leave the optional cached-download MD5 checkbox
+off for this fast check. Enabling it scans cached archives against the saved
+published digests; Stop cancels that read-only scan. Missing cached archives do not
+mean installed game files are missing. Full install/retry still performs the
+third-party backend's own required integrity checks.
+
 **Stop** cancels the backend and its child processes. If a Microsoft runtime
 installer is running, it is allowed to finish first. Complete cached archives
 remain available; an incomplete individual archive may need a fresh download.

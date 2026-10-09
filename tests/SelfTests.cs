@@ -86,6 +86,31 @@ static class SelfTests
         string mod = Path.Combine(gamma, "mods", "TestMod"); Directory.CreateDirectory(mod); File.WriteAllText(Path.Combine(mod, "meta.ini"), "fixture");
         rejected = false; try { Safety.VerifyGame(anomaly, gamma); } catch { rejected = true; } check(rejected, "metadata-only mod blocks Play");
         File.WriteAllText(Path.Combine(mod, "test.ltx"), "fixture"); check(Safety.VerifyGame(anomaly, gamma) == 1, "complete fixture verifies");
+        string iniPath = Path.Combine(gamma, "ModOrganizer.ini");
+        string originalIni = File.ReadAllText(iniPath);
+        File.WriteAllText(iniPath, originalIni.Replace(anomaly.Replace('\\', '/'), anomaly.Replace(@"\", @"\\")));
+        check(Safety.VerifyGame(anomaly, gamma) == 1, "MO2 escaped Windows path verifies");
+        check(!Safety.SameGamePath("@ByteArray(D:\\\\Other)", "D:\\Anomaly"), "different game path still refused");
+        string canonical = Path.Combine(gamma, "mods", InstallationRecovery.CorrectName); Directory.CreateDirectory(canonical); File.WriteAllText(Path.Combine(canonical, "payload.ltx"), "fixture");
+        File.WriteAllLines(Path.Combine(profile, "modlist.txt"), new[] { "-" + InstallationRecovery.CorrectName, "+" + InstallationRecovery.BrokenName, "+TestMod" });
+        check(InstallationRecovery.RepairKnownAlias(gamma), "known upstream alias is repaired");
+        var repaired = File.ReadAllLines(Path.Combine(profile, "modlist.txt"));
+        check(repaired.Length == 2 && repaired[0] == "+" + InstallationRecovery.CorrectName, "alias preserves enabled entry priority without duplicate");
+        check(Directory.GetFiles(profile, "*.bak").Length == 1, "profile backed up before repair");
+        check(!InstallationRecovery.RepairKnownAlias(gamma), "alias repair is idempotent");
+        File.WriteAllLines(Path.Combine(profile, "modlist.txt"), new[] { "-" + InstallationRecovery.CorrectName, "+TestMod" });
+        check(!InstallationRecovery.RepairKnownAlias(gamma) && File.ReadAllLines(Path.Combine(profile, "modlist.txt"))[0].StartsWith("-"), "intentional disabled canonical mod is preserved");
+        string cache = Path.Combine(gamma, "downloads"); Directory.CreateDirectory(cache);
+        File.WriteAllText(Path.Combine(cache, "sample.zip"), "abc", new UTF8Encoding(false));
+        File.WriteAllText(Path.Combine(profile, "modpack_maker_list.txt"), "url\t0\tpatch\tname\tpage\tsample.zip\t900150983cd24fb0d6963f7d28e17f72\n");
+        var audit = CacheAudit.Run(gamma, CancellationToken.None, null);
+        check(audit.Checked == 1 && audit.Corrupt.Count == 0, "optional cached MD5 audit accepts correct bytes");
+        File.WriteAllText(Path.Combine(cache, "sample.zip"), "changed");
+        check(CacheAudit.Run(gamma, CancellationToken.None, null).Corrupt.Count == 1, "cached MD5 mismatch detected without deleting files");
+        var cancelled = new CancellationTokenSource(); cancelled.Cancel(); rejected = false;
+        try { CacheAudit.Run(gamma, cancelled.Token, null); } catch (OperationCanceledException) { rejected = true; }
+        check(rejected, "MD5 audit can be cancelled");
+        File.WriteAllText(Path.Combine(profile, "modlist.txt"), "+UnknownMod\n"); rejected = false; try { Safety.VerifyGame(anomaly, gamma); } catch { rejected = true; } check(rejected, "unknown missing mod is still refused");
         File.WriteAllText(Path.Combine(profile, "modlist.txt"), "+..\n"); rejected = false; try { Safety.VerifyGame(anomaly, gamma); } catch { rejected = true; } check(rejected, "mod path traversal refused");
         File.WriteAllLines(Path.Combine(reportFolder, "test-results.txt"), checks); return 0;
     }

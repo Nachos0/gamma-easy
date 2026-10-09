@@ -43,7 +43,7 @@ static class Worker
             {
             try
             {
-                File.WriteAllText(Program.LogFile, "GAMMA Easy 0.1.0 | FaithBeam backend release 1.37.1\r\n");
+                File.WriteAllText(Program.LogFile, "GAMMA Easy 0.1.1 | FaithBeam backend release 1.37.1\r\n");
                 Program.Log("Checking drive and existing folders…");
                 Safety.ValidateDrive(state.Root, true);
                 Program.ExtractBackend(Path.Combine(Program.Home, "backend"));
@@ -60,6 +60,7 @@ static class Worker
                 if (!Safety.Successful(output, 0)) throw new IOException("The installer did not confirm completion. Read the log and retry.");
                 CheckCancel();
                 Program.Log("Checking DX11, first-run defaults, Mod Organizer and enabled mods…");
+                if (InstallationRecovery.RepairKnownAlias(folders[1])) Program.Log("Corrected a known upstream GAMMA profile naming mismatch.");
                 int count = Safety.VerifyGame(folders[0], folders[1]);
                 Program.Log("Verified " + count + " enabled mods. Ready to play.");
                 state.Phase = "Ready"; state.Error = ""; Program.SaveState(state); return 0;

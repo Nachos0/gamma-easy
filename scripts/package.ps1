@@ -1,4 +1,4 @@
-param([string]$Version = '0.1.0')
+param([string]$Version = '0.1.1')
 . "$PSScriptRoot/common.ps1"
 if ($Version -notmatch '^\d+\.\d+\.\d+(?:-[A-Za-z0-9.-]+)?$') { throw 'Invalid release version.' }
 $exe = Resolve-RepoPath 'build/GammaSetup.exe'

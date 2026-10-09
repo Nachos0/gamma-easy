@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Documented the planned optional xrRazom co-op integration and reversible mode
+  switch. This is a research/roadmap update; no co-op functionality is shipped.
+
 ## 0.1.0 — Early alpha
 
 - Windows Forms setup, drive selection, and launcher.

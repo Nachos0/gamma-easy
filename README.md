@@ -106,6 +106,11 @@ installing Microsoft runtimes.
 Follow the [roadmap](docs/ROADMAP.md), or
 [report a reproducible problem](https://github.com/Nachos0/gamma-easy/issues/new/choose).
 
+**Planned co-op:** optional [xrRazom integration](docs/COOP.md) after the base game
+installation is verified, with a reversible Single-player / Co-op mode switch.
+The integration and GAMMA tweaks will be worked out and tested later; co-op is not
+included in the current release.
+
 ## Credits and license
 
 - [Grokitach / STALKER GAMMA](https://github.com/Grokitach/Stalker_GAMMA): modpack,

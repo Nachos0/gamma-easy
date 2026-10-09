@@ -1,7 +1,7 @@
 # Validation status
 
-The initial build passed **25 checks** locally on Windows. CI reruns these from the
-repository. Passing them demonstrates launcher behavior; it does not demonstrate a
+The initial build passed **25 checks** locally on Windows. CI is configured to rerun
+these from the repository. Passing them demonstrates launcher behavior; it does not demonstrate a
 working installed game.
 
 | Area | Checked |

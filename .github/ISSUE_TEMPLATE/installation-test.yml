@@ -1,0 +1,44 @@
+name: Installation test report
+description: Help validate a real fresh install, retry, update, or game launch.
+title: "[Install test] "
+labels: [installation-test]
+body:
+  - type: markdown
+    attributes:
+      value: "A complete real installation is still needed before a stable release. Report what you observed; redact usernames and private information."
+  - type: input
+    id: version
+    attributes:
+      label: App and backend version
+      placeholder: "GAMMA Easy 0.1.0 / backend release 1.37.1"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Windows, drive, and initial free space
+    validations:
+      required: true
+  - type: dropdown
+    id: scenario
+    attributes:
+      label: Scenario
+      options:
+        - Fresh installation
+        - Interrupted installation and retry
+        - Repair / update
+        - MO2 / game launch
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Result and phases completed
+      description: "Mention UAC, prerequisites, downloads, extraction, profile checks, and actual gameplay as applicable."
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Redacted error or log excerpt
+      render: text

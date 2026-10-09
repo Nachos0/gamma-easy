@@ -1,0 +1,20 @@
+# Generated dependencies, installers, test fixtures, and local credentials
+/.cache/
+/dist/
+/build/
+/test-results/
+*.exe
+*.dll
+*.pdb
+*.zip
+*.partial
+*.tmp
+.env
+.env.*
+!.env.example
+hosts.yml
+*.log
+.vs/
+.vscode/
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,40 @@
+name: Launcher bug
+description: A reproducible problem with setup, drive selection, installation, or Play.
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "Include a small log excerpt. Remove credentials, personal paths, and unrelated information. For vulnerabilities, use Security → Report a vulnerability."
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Windows version and drive type
+      placeholder: "Windows 11 x64, internal NTFS SSD"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps and expected behavior
+      description: "Describe how to reproduce the problem and what you expected."
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result and error
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log excerpt
+      render: text

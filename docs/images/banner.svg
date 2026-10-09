@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="340" viewBox="0 0 1200 340" role="img" aria-label="GAMMA Easy: choose a drive, install, play">
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101719"/><stop offset="1" stop-color="#27362a"/></linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#a5b392" stroke-opacity=".06"/></pattern>
+  </defs>
+  <rect width="1200" height="340" rx="18" fill="url(#bg)"/>
+  <rect width="1200" height="340" rx="18" fill="url(#grid)"/>
+  <path d="M1000 25L1190 215M925 45L1170 290M940 150L1090 300" stroke="#8fae56" stroke-opacity=".13" stroke-width="28"/>
+  <rect x="48" y="44" width="7" height="251" rx="3" fill="#8fae56"/>
+  <text x="82" y="78" font-family="Segoe UI,Arial,sans-serif" font-size="16" letter-spacing="4" fill="#a9b5a6">COMMUNITY LAUNCHER · WINDOWS X64</text>
+  <text x="78" y="157" font-family="Segoe UI,Arial,sans-serif" font-size="72" font-weight="700" letter-spacing="2" fill="#edf0e6">GAMMA EASY</text>
+  <text x="82" y="212" font-family="Segoe UI,Arial,sans-serif" font-size="29" fill="#c4cdbb">Choose a drive. Install. Play.</text>
+  <rect x="82" y="251" width="140" height="31" rx="5" fill="#8fae56"/>
+  <text x="152" y="272" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="2" fill="#172015">EARLY ALPHA</text>
+  <text x="245" y="272" font-family="Segoe UI,Arial,sans-serif" font-size="15" fill="#a9b5a6">Anomaly + GAMMA, with fewer steps.</text>
+  <circle cx="1020" cy="157" r="81" fill="none" stroke="#8fae56" stroke-opacity=".35" stroke-width="2"/>
+  <circle cx="1020" cy="157" r="12" fill="#8fae56"/>
+  <g fill="#8fae56" opacity=".7">
+    <path d="M1001 132L970 88A82 82 0 0 1 1070 88L1039 132A31 31 0 0 0 1001 132Z"/>
+    <path d="M1001 132L970 88A82 82 0 0 1 1070 88L1039 132A31 31 0 0 0 1001 132Z" transform="rotate(120 1020 157)"/>
+    <path d="M1001 132L970 88A82 82 0 0 1 1070 88L1039 132A31 31 0 0 0 1001 132Z" transform="rotate(240 1020 157)"/>
+  </g>
+</svg>

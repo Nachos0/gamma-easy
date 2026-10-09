@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "backend": {
+    "version": "1.37.1",
+    "file": "backend-1.37.1.zip",
+    "url": "https://github.com/FaithBeam/stalker-gamma-cli/releases/download/1.37.1/stalker-gamma%2Bwin.x64.zip",
+    "sha256": "bfe9f5390604d5a962d5a156a18e48526a56b3a51d92d815042d649a0f2f7105",
+    "sourceCommit": "fad25e08a273368ca65c5faa6a65a6515efc7895"
+  },
+  "sources": [
+    {
+      "file": "backend-source-1.37.1.zip",
+      "url": "https://codeload.github.com/FaithBeam/stalker-gamma-cli/zip/fad25e08a273368ca65c5faa6a65a6515efc7895",
+      "sha256": "b8ad0664bab3f09315e648325abc5307728f9a73de3f0bac9fbcdd491ed2c57c"
+    },
+    {
+      "file": "7zip-source-26.03.zip",
+      "url": "https://codeload.github.com/ip7z/7zip/zip/refs/tags/26.03",
+      "sha256": "124354cebe3a086ef5d965a1cbaff2a39bb29df85b64a62beaee83a539ae92bb"
+    },
+    {
+      "file": "curl-impersonate-source-v2.2.2.zip",
+      "url": "https://codeload.github.com/lexiforest/curl-impersonate/zip/refs/tags/v2.2.2",
+      "sha256": "f5d7c3757e0b5e3149ae2c434eff7e57a28995bc38239cbd78eda22ff5444824"
+    },
+    {
+      "file": "libgit2sharp-source-0.32.0.zip",
+      "url": "https://codeload.github.com/libgit2/libgit2sharp/zip/refs/tags/0.32.0",
+      "sha256": "01710d186a44cbf759894f2bd5244420c86da7935199a1cbc39d586406c778b2"
+    },
+    {
+      "file": "libgit2sharp-native-source-2.0.324.zip",
+      "url": "https://codeload.github.com/libgit2/libgit2sharp.nativebinaries/zip/refs/tags/2.0.324",
+      "sha256": "f2ff4ee10d0ddbb7b3cb007e0839be32f8132d6465294ef22c9664bcf6a79347"
+    },
+    {
+      "file": "libgit2-source-5853918.zip",
+      "url": "https://codeload.github.com/libgit2/libgit2/zip/5853918c4c6a7b12f8becf4bd11ff4362ebb9020",
+      "sha256": "221eac1af405b413806d669eca31c38d409839ca4bf6b93d6ec08dd438da2aac"
+    }
+  ]
+}

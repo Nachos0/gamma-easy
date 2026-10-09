@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Upstream GAMMA installation guide
+    url: https://github.com/Grokitach/Stalker_GAMMA/wiki/Installing-GAMMA
+    about: Check current upstream requirements and manual installation instructions.
+  - name: Installer engine issues
+    url: https://github.com/FaithBeam/stalker-gamma-cli/issues
+    about: Report confirmed backend problems to its own project.

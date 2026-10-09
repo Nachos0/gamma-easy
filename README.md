@@ -44,6 +44,9 @@ of GAMMA, GSC Game World, and the installer backend's authors.
   never disabled.
 - **Play through MO2.** Checks the installed profile, DX11 entry, required files,
   and enabled mod folders before allowing launch.
+- **Optional xrRazom co-op.** Package verification, a separate profile, reversible
+  engines, recovery and read-only friend comparison. Two-player gameplay needs
+  validation. [Co-op guide](docs/COOP.md).
 
 The setup contains the launcher and installer engine. **It does not bundle game
 files or the modpack.** An existing installation is not imported or overwritten.
@@ -106,10 +109,8 @@ installing Microsoft runtimes.
 Follow the [roadmap](docs/ROADMAP.md), or
 [report a reproducible problem](https://github.com/Nachos0/gamma-easy/issues/new/choose).
 
-**Planned co-op:** optional [xrRazom integration](docs/COOP.md) after the base game
-installation is verified, with a reversible Single-player / Co-op mode switch.
-The integration and GAMMA tweaks will be worked out and tested later; co-op is not
-included in the current release.
+**Experimental co-op:** 0.2.0 adds [xrRazom setup and switching](docs/COOP.md).
+Setup stays optional and inactive until Co-op is selected.
 The [candidate comparison](docs/COOP-COMPARISON.md) also covers Anomaly Together 2
 and improvements to mode switching, friend compatibility, and recovery.
 

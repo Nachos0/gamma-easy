@@ -3,6 +3,11 @@
 GAMMA Easy is an independent GPL-3.0-or-later Windows wrapper. It integrates the
 following projects, which retain their original licenses and copyrights.
 
+Optional xrRazom packages are proprietary upstream downloads imported by the user;
+their binaries are not included in the wrapper/source bundle. The integration is
+original code. Commander integration documentation informed the research; no
+source files from that project are bundled.
+
 | Component | Pinned version / revision | License / source |
 | --- | --- | --- |
 | FaithBeam stalker-gamma-cli | 1.37.1 / `fad25e08a273368ca65c5faa6a65a6515efc7895` | [GPL-3.0](https://github.com/FaithBeam/stalker-gamma-cli) |

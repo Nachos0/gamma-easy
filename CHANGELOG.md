@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.0 — Optional co-op alpha
+
+- Verified xrRazom 1.4 Slim/Full import; Full installs core files only.
+- Automatic download with official-browser/import fallback.
+- Separate MO2 profile, reversible engines and persistent recovery journals.
+- Engine-baseline refresh during GAMMA repair/update.
+- Read-only friend comparison for configs, scripts, engines and mod order.
+- Supported in-game Host/Join guidance. Two-player gameplay is unvalidated.
+
+52 isolated checks and an authenticated real-package fixture passed.
+
 ## Unreleased
 
 - Documented the planned optional xrRazom co-op integration and reversible mode

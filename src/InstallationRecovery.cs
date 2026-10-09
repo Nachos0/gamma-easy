@@ -40,7 +40,8 @@ static class InstallationRecovery
             throw new IOException("The log does not confirm a completed backend installation for this drive. Use Retry installation.");
         Safety.ValidateDrive(state.Root, false);
         if (RepairKnownAlias(folders[1])) Program.Log("Corrected the known GAMMA profile name: " + CorrectName);
-        int count = Safety.VerifyGame(folders[0], folders[1]);
+        string activeProfile = CoopManager.ForRoot(state.Root).VerifyMode();
+        int count = Safety.VerifyGame(folders[0], folders[1], activeProfile);
         state.Phase = "Ready"; state.Error = ""; Program.SaveState(state);
         Program.Log("Verification passed: " + count + " enabled mods. No downloads or extraction were performed.");
         return count;

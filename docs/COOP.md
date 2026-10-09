@@ -1,69 +1,70 @@
-# Planned co-op integration
+# Optional xrRazom co-op — 0.2.0 alpha
 
-**Status: research and planning only.** Co-op is not included in the current app
-or release. The ordinary installation has now reached the game world, confirmed
-by the user. Next work out and test the integration. The desired result is an optional co-op mode
-that the user can enable after the base installation is ready.
+The app can prepare xrRazom 1.4, create a separate MO2 profile, activate its engine,
+and restore the original single-player engine. Two-player gameplay is unvalidated.
+Backups and switching were tested with fixtures and the authenticated package.
 
-The [candidate comparison](COOP-COMPARISON.md) recommends testing xrRazom first
-and evaluating Anomaly Together 2 separately as an alternative. The choice is
-provisional until two-player testing establishes compatibility.
+## Setup
 
-## Upstream findings
+1. Finish and verify the ordinary GAMMA installation.
+2. Close Anomaly and MO2. Open Co-op setup in GAMMA Easy.
+3. Choose Download and set up, or Install from ZIP with official xrRazom 1.4 Slim
+   or Full Bundle. If automatic downloading is blocked, use its official browser
+   page and import the ZIP.
+4. Preparation leaves the game in Single-player mode.
+5. Choose Co-op · xrRazom, accept the Windows prompt, and click Play.
 
-Checked on 2026-10-09. These are the author's claims, not results from our testing.
+Full Bundle installs core files only, omitting extra MCM, FDDA and language options
+as specified by its GAMMA installer selection. The mod is highest priority in
+G.A.M.M.A. Co-op; the original single-player mod selection is preserved.
 
-- xrRazom targets Anomaly 1.5.3. The author reports that the base GAMMA profile is
-  playable, with bugs and incomplete compatibility across its mods.
-- Version 1.4 provides an MO2 installer. Installation also requires applying its
-  engine payload to Anomaly outside MO2; the co-op mod takes highest priority.
-- A GAMMA reinstall can restore the original engine and reset the mod list.
-- Session participants need matching mods. Steam sessions require Call of Pripyat
-  on every participant's account; LAN does not require that Steam ownership.
+Package checks are mandatory, independent of optional cache MD5 scanning:
+Slim MD5 3e33cc23314123b8a8cbf79457fb2403; Full MD5 ede2ce10bd15962030f696bc76ba7f29.
+The inspected Full Bundle is also SHA256-pinned to
+8bd015490d20af95e4a2d28eb78a79e365a0b19795f29be6a77a902f05b7c9a7.
+Co-op payloads are imported/downloaded client-side, not redistributed in releases.
 
-Sources:
-[mod overview](https://www.moddb.com/mods/xrrazom-stalker-anomaly-co-op) and
-[author's installation guide](https://www.moddb.com/mods/xrrazom-stalker-anomaly-co-op/downloads/xrrazom-stalker-anomaly-co-op-10).
+## Host and join
 
-## Intended app flow
+Use Settings → xrRazom Co-op inside the game. The app does not rewrite undocumented
+session settings or silently change your firewall/router.
 
-1. Finish the ordinary GAMMA installation and verify it works.
-2. Offer **Install co-op** as an optional post-install action.
-3. Download and verify a specific supported xrRazom release from its upstream source.
-4. Apply the tested GAMMA configuration, patches, and engine handling.
-5. Offer **Single-player / Co-op** mode selection, then **Play**.
+- LAN: everyone closes Steam before launch. Enable hosting and start/load the world
+  on the host. The client chooses Join Session and enters the host IP.
+- Steam: everyone starts Steam and has Call of Pripyat on their account. Use the
+  provider's Steam invitation/join flow.
+- Set each player's name and keep it consistent. Keep matching mods and the
+  provider's compatibility check enabled.
 
-A toggle must switch the required engine payload and MO2 configuration together.
-Merely unchecking a mod entry is insufficient when files outside MO2 were replaced.
-Do not display a functional toggle until both directions have been validated.
+[Author's guide](https://www.moddb.com/mods/stalker-anomaly/addons/xrrazom-stalker-anomaly-co-op-slim).
 
-## Decisions for the implementation phase
+## Returning to single-player and recovery
 
-- Inspect the selected archive and its FOMOD selections before writing an automated
-  install recipe. Determine which bundled components duplicate GAMMA components.
-- Identify the exact tweaks required by the chosen GAMMA and xrRazom versions;
-  record them in a versioned compatibility recipe rather than relying on guesses.
-- Choose engine isolation or verified backup/restore after testing the actual
-  payload. Account for every affected file, including newly added files.
-- Keep distinct MO2 profiles and define how to preserve single-player saves and
-  co-op host data. Do not assume the saves are interchangeable.
-- Record installed versions and relevant hashes so mismatched peers can receive
-  useful guidance. Keep upstream mod matching enabled.
-- Coordinate repair/update with co-op state: detect invalidated engine files and
-  require a verified reapplication or return to single-player before Play.
-- Decide how the UI guides LAN versus Steam hosting/joining using supported
-  upstream behavior. Network configuration remains a later implementation decision.
-- Review upstream distribution terms before bundling any co-op files. Prefer a
-  client-side download from the author rather than adding mod binaries to Git.
+Close Anomaly and MO2, then select Single-player. Original engine bytes are restored
+and only managed additions are removed. Unexpected external engine changes cause
+refusal rather than overwrite.
 
-## Acceptance checks before shipping
+Use distinct co-op save names. MO2 profiles may share Anomaly saves. The app does
+not convert saves or isolate host/client persistence; follow the provider's rules.
 
-- A clean GAMMA install launches successfully before adding co-op.
-- Two players can host/join using a matching, recorded configuration.
-- Test save/load, reconnect, level transitions, and representative GAMMA mods.
-- Switching back launches the original single-player configuration successfully.
-- Cancellation, failed installation, and partial switching preserve recoverability.
-- GAMMA repair/update cannot silently leave co-op selected with the wrong engine.
+Interrupted operations block Play. Use Co-op setup → Recover switch. If files changed
+externally, backups are retained and recovery needs attention.
 
-No co-op archive has been downloaded, no game files have been modified, and no
-compatibility recipe is claimed as validated by this planning change.
+GAMMA Easy restores single-player before its repair/update, refreshes backups after
+success and leaves co-op inactive. Select Co-op again when ready. Failed maintenance
+blocks launch until successful retry. External updates/manual co-op are not adopted.
+
+Backups/journals: %LOCALAPPDATA%\GammaEasy\coop\<drive-letter>. Switch to Single-player
+before removing the launcher or deleting those backups.
+
+## Friend comparison
+
+With co-op active, Export my compatibility and share the XML yourself. It contains
+mod order and relative paths/hashes, excluding personal MCM settings. Compare
+friend's manifest produces a read-only difference report.
+
+The scan accounts for base data, mod priority and MO2 Overwrite. It compares configs,
+scripts and managed engines, not every world/spawn or asset file. Matching the report
+is not a replacement for xrRazom's own connection checks. No friend patch is applied.
+
+[Candidate comparison](COOP-COMPARISON.md).

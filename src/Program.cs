@@ -24,7 +24,7 @@ using System.Xml.Serialization;
 
 [assembly: AssemblyTitle("GAMMA Easy")]
 [assembly: AssemblyDescription("Independent Anomaly and GAMMA installer and launcher")]
-[assembly: AssemblyVersion("0.1.1.0")]
+[assembly: AssemblyVersion("0.2.0.0")]
 
 static class Program
 {
@@ -45,6 +45,18 @@ static class Program
         Application.SetCompatibleTextRenderingDefault(false);
         try
         {
+            if (args.Length == 3 && args[0] == "--test-coop-package")
+            {
+                string report = Path.GetFullPath(args[2]); Directory.CreateDirectory(report);
+                try { var results = new List<string>(); CoopTests.Run(Path.Combine(report,Guid.NewGuid().ToString("N")), (ok,name) => { if (!ok) throw new Exception(name); results.Add("PASS: " + name); },args[1]); File.WriteAllLines(Path.Combine(report,"results.txt"),results); return 0; }
+                catch(Exception error) { File.WriteAllText(Path.Combine(report,"failure.txt"),error.ToString()); return 1; }
+            }
+            if (args.Length == 2 && args[0] == "--coop-worker") { Home = Path.GetDirectoryName(Application.ExecutablePath); return CoopActions.Run(args[1]); }
+            if(args.Length==2 && args[0]=="--prepare-local-coop")
+            {
+                try { var state=LoadState(); if(state.Phase!="Ready") throw new IOException("Base installation must be verified first."); Safety.ValidateDrive(state.Root,false); CoopManager.ForRoot(state.Root).Install(args[1],CancellationToken.None); File.WriteAllText(Path.Combine(Home,"coop-preparation.txt"),"Co-op profile prepared. Single-player engine remains active."); return 0; }
+                catch(Exception error) { File.WriteAllText(Path.Combine(Home,"coop-preparation.txt"),error.ToString()); return 1; }
+            }
             if (args.Length == 1 && args[0] == "--verify-install")
             {
                 try { int count = InstallationRecovery.VerifyFinished(); File.WriteAllText(Path.Combine(Home, "recovery-result.txt"), "PASS: " + count + " enabled mods verified. Ready to play."); return 0; }

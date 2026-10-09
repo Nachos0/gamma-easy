@@ -112,6 +112,7 @@ static class SelfTests
         check(rejected, "MD5 audit can be cancelled");
         File.WriteAllText(Path.Combine(profile, "modlist.txt"), "+UnknownMod\n"); rejected = false; try { Safety.VerifyGame(anomaly, gamma); } catch { rejected = true; } check(rejected, "unknown missing mod is still refused");
         File.WriteAllText(Path.Combine(profile, "modlist.txt"), "+..\n"); rejected = false; try { Safety.VerifyGame(anomaly, gamma); } catch { rejected = true; } check(rejected, "mod path traversal refused");
+        CoopTests.Run(Path.Combine(folder,"coop"),check);
         File.WriteAllLines(Path.Combine(reportFolder, "test-results.txt"), checks); return 0;
     }
 }

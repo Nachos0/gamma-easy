@@ -12,6 +12,13 @@ specific naming repair.
 
 ## First real installation and in-world launch — 2026-10-09
 
+Version 0.2.0 passed 52 isolated checks, adding inactive co-op preparation,
+preserved baseline/profile, activation/restoration, failed-copy rollback,
+external-change refusal, maintenance gating, refreshed backups and friend
+comparison. The authenticated Full Bundle passed an isolated switch/restore
+test. The user's installation was prepared and reverified in single-player.
+Actual co-op launch and two-player gameplay remain untested.
+
 The user reported that the game started normally through the updated app and
 successfully loaded into the world. This followed a real installation, a transient
 GitHub clone failure/retry, and the 0.1.1 profile/path correction. The installed

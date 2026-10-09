@@ -28,13 +28,12 @@
 - [x] Research xrRazom, Anomaly Together 2, and other candidates; publish the comparison.
 - [ ] Compare two-player behavior before selecting a supported provider.
 - [ ] Validate xrRazom against the installed GAMMA version and identify its required tweaks.
-- [ ] Implement optional post-install co-op setup from a verified upstream release.
-- [ ] Add a reversible Single-player / Co-op switch covering both engine files and MO2 profiles.
-- [ ] Handle compatibility checks, saves, and GAMMA repair/update interactions.
+- [x] Implement optional post-install co-op setup from a verified upstream release.
+- [x] Add reversible switching for engine files and MO2 profiles.
+- [x] Add friend comparison and maintenance handling; document shared saves.
 - [ ] Test hosting/joining and switching back before enabling the toggle for users.
 
-See the [xrRazom integration plan](COOP.md). This feature is planned, not installed
-or supported in the current release.
+See the [experimental co-op guide](COOP.md). Two-player gameplay is unvalidated.
 
 Candidate evidence and proposed app improvements are in the
 [co-op comparison](COOP-COMPARISON.md).

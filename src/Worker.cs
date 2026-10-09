@@ -43,11 +43,13 @@ static class Worker
             {
             try
             {
-                File.WriteAllText(Program.LogFile, "GAMMA Easy 0.1.1 | FaithBeam backend release 1.37.1\r\n");
+                File.WriteAllText(Program.LogFile, "GAMMA Easy 0.2.0 | FaithBeam backend release 1.37.1\r\n");
                 Program.Log("Checking drive and existing folders…");
                 Safety.ValidateDrive(state.Root, true);
                 Program.ExtractBackend(Path.Combine(Program.Home, "backend"));
                 var folders = Safety.GameFolders(state.Root);
+                var coop = CoopManager.ForRoot(state.Root);
+                coop.BeginMaintenance();
                 foreach (string folder in folders) { Directory.CreateDirectory(folder); File.WriteAllText(Path.Combine(folder, Program.Marker), Program.Owner); }
                 string cache = Path.Combine(folders[1], "downloads"); Directory.CreateDirectory(cache); Safety.RejectReparseParents(cache);
                 // Use GAMMA/downloads itself as cache: the backend therefore does not create a symlink.
@@ -62,6 +64,7 @@ static class Worker
                 Program.Log("Checking DX11, first-run defaults, Mod Organizer and enabled mods…");
                 if (InstallationRecovery.RepairKnownAlias(folders[1])) Program.Log("Corrected a known upstream GAMMA profile naming mismatch.");
                 int count = Safety.VerifyGame(folders[0], folders[1]);
+                coop.FinishMaintenance();
                 Program.Log("Verified " + count + " enabled mods. Ready to play.");
                 state.Phase = "Ready"; state.Error = ""; Program.SaveState(state); return 0;
             }

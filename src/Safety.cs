@@ -106,19 +106,19 @@ static class Safety
         }
         return bytes;
     }
-    internal static int VerifyGame(string anomaly, string gamma)
+    internal static int VerifyGame(string anomaly, string gamma, string profile = "G.A.M.M.A")
     {
         foreach (string file in new[] { "AnomalyLauncher.exe", "bin\\AnomalyDX11.exe", "fsgame.ltx", "appdata\\user.ltx" })
             if (!File.Exists(Path.Combine(anomaly, file))) throw new IOException("Missing Anomaly file: " + file);
         foreach (string file in new[] { "ModOrganizer.exe", "ModOrganizer.ini", "profiles\\G.A.M.M.A\\modlist.txt", "profiles\\G.A.M.M.A\\modpack_maker_list.txt" })
             if (!File.Exists(Path.Combine(gamma, file))) throw new IOException("Missing GAMMA file: " + file);
         string ini = File.ReadAllText(Path.Combine(gamma, "ModOrganizer.ini"));
-        if (!ini.Contains("selected_profile=@ByteArray(G.A.M.M.A)")) throw new IOException("The GAMMA profile is not configured.");
+        if (!ini.Contains("selected_profile=@ByteArray(" + profile + ")")) throw new IOException("The selected game profile is not configured.");
         var gamePath = Regex.Match(ini, @"(?m)^gamePath=(.*)$");
         if (!gamePath.Success || !SameGamePath(gamePath.Groups[1].Value.Trim(), anomaly)) throw new IOException("Mod Organizer points to the wrong Anomaly folder.");
         if (!ini.Contains("title=Anomaly (DX11)")) throw new IOException("The DX11 launch entry is missing.");
         int count = 0;
-        foreach (string raw in File.ReadLines(Path.Combine(gamma, "profiles", "G.A.M.M.A", "modlist.txt")))
+        foreach (string raw in File.ReadLines(Path.Combine(gamma, "profiles", profile, "modlist.txt")))
         {
             string line = raw.Trim();
             if (!line.StartsWith("+")) continue;

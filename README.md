@@ -22,9 +22,9 @@ A small Windows installer and launcher for **S.T.A.L.K.E.R. Anomaly + GAMMA**.
 Choose an internal drive, let it handle the downloads and setup, then launch the
 game through Mod Organizer 2.
 
-**Early alpha:** the launcher has passed isolated checks, but a complete game
-installation, administrator handoff, and in-game launch have not yet been tested
-end to end. See [validation status](docs/TESTING.md). This project is independent
+**Early alpha:** 36 isolated checks passed, and the first real installation reached
+the game world, confirmed by the user on 2026-10-09. Extended gameplay and other
+Windows configurations still need testing. See [validation status](docs/TESTING.md). This project is independent
 of GAMMA, GSC Game World, and the installer backend's authors.
 
 ![GAMMA Easy launcher](docs/images/launcher.png)
@@ -93,7 +93,7 @@ installing Microsoft runtimes.
 
 ## Known limits
 
-- Full installation and gameplay are still awaiting a real test.
+- The first installation reached the world; extended gameplay and additional machines still need testing.
 - Download hosts can fail, throttle, or present bot challenges.
 - Retry reuses verified complete archives; universal byte-level resume is not implemented.
 - **Repair / update** reapplies the official GAMMA profile and can reset custom mod

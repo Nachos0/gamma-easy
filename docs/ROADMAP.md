@@ -2,7 +2,8 @@
 
 ## Before a stable release
 
-- [ ] Complete a real fresh installation and MO2/DX11 gameplay test.
+- [x] Complete a real installation and receive confirmation of an in-world launch (2026-10-09).
+- [ ] Validate extended gameplay, save/load, and a fresh install on another machine.
 - [ ] Validate standard-user and alternate-account UAC handoff.
 - [ ] Exercise interrupted downloads/extraction, mirror failures, and recovery.
 - [ ] Verify Microsoft prerequisites, restart behavior, and update/save preservation.

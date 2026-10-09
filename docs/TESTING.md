@@ -8,7 +8,19 @@ Version 0.1.1 passes **36 isolated checks**, including MO2 Windows-path parsing,
 the known upstream mod-name alias, profile backup/priority preservation, optional
 cached MD5 matching, mismatch reporting, and audit cancellation. A real completed
 installation passed file/profile verification with 578 enabled mods after the
-specific naming repair. Gameplay remains untested.
+specific naming repair.
+
+## First real installation and in-world launch — 2026-10-09
+
+The user reported that the game started normally through the updated app and
+successfully loaded into the world. This followed a real installation, a transient
+GitHub clone failure/retry, and the 0.1.1 profile/path correction. The installed
+profile passed local checks with 578 enabled mods.
+
+Evidence is a successful user-reported in-world launch plus the inspected installer
+log and file/profile checks. It is not an independently observed extended gameplay
+test or evidence for every supported Windows configuration. Co-op, prolonged
+stability, and save/load behavior remain unvalidated.
 
 | Area | Checked |
 | --- | --- |
@@ -27,10 +39,10 @@ the bundled 7-Zip, verified DXSETUP's signature, and visually inspected the laun
 
 ## Still needed before a stable release
 
-- A complete fresh Anomaly + GAMMA installation from the current upstream files.
+- Repeat a fresh installation on another supported Windows configuration.
 - UAC handoff under a standard Windows user, including alternate administrator credentials.
 - Real system runtime installation and restart behavior.
-- Actual MO2/DX11 startup and an in-game session.
+- Extended gameplay, save/load, and repeated MO2/DX11 startup.
 - Stop/retry during real large downloads and extraction.
 - Repair/update against a working installation, including saved-game/settings preservation.
 - Mirror failures, antivirus blocking, and low-space failures during installation.
